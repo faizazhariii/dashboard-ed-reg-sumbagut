@@ -356,23 +356,23 @@
   </header>
 
   <div class="page-tabs">
-    <button class="page-tab active" id="tabBtnPT2" type="button">Feeding PT2</button>
-    <button class="page-tab" id="tabBtnHem" type="button">HEM</button>
-    <button class="page-tab" id="tabBtnOlo" type="button">OLO</button>
-    <button class="page-tab" id="tabBtnMbb" type="button">MBB</button>
-    <button class="page-tab" id="tabBtnPt3" type="button">PT3 TA</button>
-    <button class="page-tab" id="tabBtnPt3Fh" type="button">PT3 FH</button>
-    <button class="page-tab" id="tabBtnQeRelok" type="button">QE Relok</button>
-    <button class="page-tab" id="tabBtnLapPt2" type="button">PT2</button>
-    <button class="page-tab" id="tabBtnKomitmenGL" type="button">🎯 Komitmen GL</button>
-    <button class="page-tab" id="tabBtnChecklist" type="button">☑️ Checklist</button>
-    <button class="page-tab" id="tabBtnNeedOlt" type="button">🔧 Need Modul OLT</button>
-    <button class="page-tab" id="tabBtnGolive" type="button">🟢 Golive</button>
-    <button class="page-tab" id="tabBtnWisa" type="button">🖼️ WISA</button>
-    <button class="page-tab" id="tabBtnRekap" type="button">📊 Rekap PT2/PT3</button>
+    <button class="page-tab" id="tabBtnPT2" type="button" style="display:none;">Feeding PT2</button>
+    <button class="page-tab" id="tabBtnHem" type="button" style="display:none;">HEM</button>
+    <button class="page-tab" id="tabBtnOlo" type="button" style="display:none;">OLO</button>
+    <button class="page-tab" id="tabBtnMbb" type="button" style="display:none;">MBB</button>
+    <button class="page-tab" id="tabBtnPt3" type="button" style="display:none;">PT3 TA</button>
+    <button class="page-tab" id="tabBtnPt3Fh" type="button" style="display:none;">PT3 FH</button>
+    <button class="page-tab" id="tabBtnQeRelok" type="button" style="display:none;">QE Relok</button>
+    <button class="page-tab" id="tabBtnLapPt2" type="button" style="display:none;">PT2</button>
+    <button class="page-tab" id="tabBtnKomitmenGL" type="button" style="display:none;">🎯 Komitmen GL</button>
+    <button class="page-tab" id="tabBtnChecklist" type="button" style="display:none;">☑️ Checklist</button>
+    <button class="page-tab" id="tabBtnNeedOlt" type="button" style="display:none;">🔧 Need Modul OLT</button>
+    <button class="page-tab" id="tabBtnGolive" type="button" style="display:none;">🟢 Golive</button>
+    <button class="page-tab" id="tabBtnWisa" type="button" style="display:none;">🖼️ WISA</button>
+    <button class="page-tab active" id="tabBtnRekap" type="button">📊 Rekap Tsel</button>
   </div>
 
-  <div id="pagePT2">
+  <div id="pagePT2" style="display:none;">
 
   <div id="loadingState" class="state-msg">Memuat data produksi dari Google Sheets…</div>
   <div id="errorState" class="state-msg" style="display:none;">
@@ -2271,7 +2271,7 @@
 
     </div>
 
-    <div id="pageRekap" style="display:none;">
+    <div id="pageRekap">
 
     <div class="section" style="margin-top:0;">
       <p class="section-title" style="margin-bottom:2px;">Rekap PT2 / PT3 TA / PT3 FH / MBB</p>
@@ -2490,7 +2490,6 @@ function downloadRowsAsCsv(filename, columns, rows){
 const CSV_URLS = [
   "https://docs.google.com/spreadsheets/d/1azzVodMtgOyw0cmS3FLkkzC7ZEU_aO7ekyn_NKEUkZU/gviz/tq?tqx=out:csv&gid=817384998",
   "https://docs.google.com/spreadsheets/d/1azzVodMtgOyw0cmS3FLkkzC7ZEU_aO7ekyn_NKEUkZU/export?format=csv&gid=817384998",
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vS7-kfadqORsY1YbF9_eL7oD58BM1EwmjdMU7zWpx0z0yVoOQCT7l90Az2EgP3UGF1CbOb-usZc3mgf/pub?gid=1563055842&single=true&output=csv"
 ];
 
 const COLORS = { golive: '#2F5233', godeploy: '#3B6E86', drop: '#7A2E2A', other: '#8992A8' };
