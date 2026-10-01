@@ -2377,73 +2377,6 @@
       </div>
     </div>
 
-    <!-- ========== MBB ========== -->
-    <hr class="rekap-divider">
-    <div class="section">
-      <p class="section-title" style="font-size:15px;">MBB</p>
-      <div class="kpi-row" id="rekapMbbKpiRow"></div>
-      <p class="section-title" style="font-size:13px;margin-top:16px;">Breakdown SOW — New Infra / New Link / Dual Homing</p>
-      <div class="table-card" style="overflow-x:auto;max-width:420px;">
-        <table class="pivot-table">
-          <thead><tr><th>Kategori SOW</th><th>Jumlah</th></tr></thead>
-          <tbody id="rekapMbbSowBody"></tbody>
-        </table>
-      </div>
-
-      <p class="section-title" style="font-size:13px;margin-top:16px;">Pivot Branch × Status — New Infra</p>
-      <div class="table-card" style="overflow-x:auto;">
-        <table class="pivot-table">
-          <thead><tr id="rekapMbbInfraPivotHead"></tr></thead>
-          <tbody id="rekapMbbInfraPivotBody"></tbody>
-        </table>
-      </div>
-      <p class="section-title" style="font-size:13px;margin-top:16px;">Pivot Branch × Status — New Link</p>
-      <div class="table-card" style="overflow-x:auto;">
-        <table class="pivot-table">
-          <thead><tr id="rekapMbbLinkPivotHead"></tr></thead>
-          <tbody id="rekapMbbLinkPivotBody"></tbody>
-        </table>
-      </div>
-      <p class="section-title" style="font-size:13px;margin-top:16px;">Pivot Branch × Status — Dual Homing</p>
-      <div class="table-card" style="overflow-x:auto;">
-        <table class="pivot-table">
-          <thead><tr id="rekapMbbDualPivotHead"></tr></thead>
-          <tbody id="rekapMbbDualPivotBody"></tbody>
-        </table>
-      </div>
-
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;">
-        <p class="section-title" style="font-size:13px;margin:0;">Komitmen OA Per Bulan — New Infra</p>
-        <select id="rekapMbbInfraCommitMonth" class="period-select"></select>
-      </div>
-      <div class="table-card" style="overflow-x:auto;">
-        <table class="pivot-table">
-          <thead><tr id="rekapMbbInfraCommitHead"></tr></thead>
-          <tbody id="rekapMbbInfraCommitBody"></tbody>
-        </table>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;">
-        <p class="section-title" style="font-size:13px;margin:0;">Komitmen OA Per Bulan — New Link</p>
-        <select id="rekapMbbLinkCommitMonth" class="period-select"></select>
-      </div>
-      <div class="table-card" style="overflow-x:auto;">
-        <table class="pivot-table">
-          <thead><tr id="rekapMbbLinkCommitHead"></tr></thead>
-          <tbody id="rekapMbbLinkCommitBody"></tbody>
-        </table>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;">
-        <p class="section-title" style="font-size:13px;margin:0;">Komitmen OA Per Bulan — Dual Homing</p>
-        <select id="rekapMbbDualCommitMonth" class="period-select"></select>
-      </div>
-      <div class="table-card" style="overflow-x:auto;">
-        <table class="pivot-table">
-          <thead><tr id="rekapMbbDualCommitHead"></tr></thead>
-          <tbody id="rekapMbbDualCommitBody"></tbody>
-        </table>
-      </div>
-    </div>
-
     <!-- ========== DETAIL DATA (output klik) ========== -->
     <hr class="rekap-divider">
     <div class="section" id="rekapDetailSection">
@@ -6306,7 +6239,6 @@ function mbbBuildDashboard(){
   renderKomitmenTrendChart('mbbKomitmenTrendChart', null, mbbAGG.rows, mbbGet, 'TGL COMMIT OA FIX', (row)=> mbbFiOaOgp(row), mbbFilterCtl, 'mbbKomitmenTrendTitle');
   renderKomitmenGLPage();
   renderMbbNeedOltPage();
-  renderRekapMBB();
   renderMbbPainPoint();
 }
 
@@ -11164,55 +11096,6 @@ function renderMbbPainPoint(){
   });
 }
 
-function renderRekapMBB(){
-  if(!mbbAGG) return;
-  const mbbCategoryFn = (row)=> hemCategoryOfLabel(mbbRowStatusLabel(row));
-  const mbbValueFn = ()=> 1;
-
-  // KPI utama (semua kategori SOW digabung)
-  renderRekapPivotGeneric('MBB', 'rekapMbbKpiRow', null, null, mbbAGG, mbbGet, mbbRowStatusLabel, mbbCategoryFn, null, mbbValueFn);
-
-  function mbbSowMatch(row, kind){
-    const sow = (mbbGet(row,'SOW PRE ORDER')||'').toUpperCase();
-    if(kind === 'infra') return sow.includes('INFRA');
-    if(kind === 'link') return sow.includes('LINK');
-    if(kind === 'dual') return sow.includes('DUAL') || sow.includes('HOMING');
-    return false;
-  }
-
-  const sowCategories = [
-    { key:'infra', rows: mbbAGG.rows.filter(r=>mbbSowMatch(r,'infra')), pivotHead:'rekapMbbInfraPivotHead', pivotBody:'rekapMbbInfraPivotBody', commitMonth:'rekapMbbInfraCommitMonth', commitHead:'rekapMbbInfraCommitHead', commitBody:'rekapMbbInfraCommitBody' },
-    { key:'link', rows: mbbAGG.rows.filter(r=>mbbSowMatch(r,'link')), pivotHead:'rekapMbbLinkPivotHead', pivotBody:'rekapMbbLinkPivotBody', commitMonth:'rekapMbbLinkCommitMonth', commitHead:'rekapMbbLinkCommitHead', commitBody:'rekapMbbLinkCommitBody' },
-    { key:'dual', rows: mbbAGG.rows.filter(r=>mbbSowMatch(r,'dual')), pivotHead:'rekapMbbDualPivotHead', pivotBody:'rekapMbbDualPivotBody', commitMonth:'rekapMbbDualCommitMonth', commitHead:'rekapMbbDualCommitHead', commitBody:'rekapMbbDualCommitBody' },
-  ];
-
-  sowCategories.forEach(cat=>{
-    const fakeAgg = { rows: cat.rows };
-    renderRekapPivotGeneric('MBB', 'rekapMbbKpiRowDUMMY_'+cat.key, cat.pivotHead, cat.pivotBody, fakeAgg, mbbGet, mbbRowStatusLabel, mbbCategoryFn, null, mbbValueFn);
-    renderRekapKomitmenBulanan('MBB', cat.commitMonth, cat.commitHead, cat.commitBody, fakeAgg, mbbGet, mbbRowStatusLabel, mbbCategoryFn, null, mbbValueFn, 'TGL COMMIT OA FIX', 'BRANCH');
-  });
-
-  // Breakdown SOW PRE ORDER: New Infra / New Link / Dual Homing / lainnya
-  const sowBody = document.getElementById('rekapMbbSowBody');
-  if(sowBody){
-    const sowRowsAgg = { 'New Infra':[], 'New Link':[], 'Dual Homing':[] };
-    let lainnyaRows = [];
-    mbbAGG.rows.forEach(row=>{
-      const sow = (mbbGet(row,'SOW PRE ORDER')||'').toUpperCase();
-      if(sow.includes('INFRA')) sowRowsAgg['New Infra'].push(row);
-      else if(sow.includes('LINK')) sowRowsAgg['New Link'].push(row);
-      else if(sow.includes('DUAL') || sow.includes('HOMING')) sowRowsAgg['Dual Homing'].push(row);
-      else lainnyaRows.push(row);
-    });
-    const total = mbbAGG.rows.length;
-    const entries = Object.entries(sowRowsAgg);
-    if(lainnyaRows.length > 0) entries.push(['Tidak Diketahui / Lainnya', lainnyaRows]);
-    sowBody.innerHTML = entries.map(([label,rowsArr])=>{
-      const countTd = rekapTd('MBB', rowsArr, `${rowsArr.length.toLocaleString('id-ID')} <span class="kpi-sub" style="display:inline;">(${rekapPct(rowsArr.length,total)})</span>`, `MBB — SOW ${label}`);
-      return `<tr><td class="name">${label}</td>${countTd}</tr>`;
-    }).join('') + `<tr class="total-row"><td class="name">TOTAL</td>${rekapTd('MBB', mbbAGG.rows, total.toLocaleString('id-ID'), 'MBB — Semua SOW')}</tr>`;
-  }
-}
 
 /* Tabel pivot Branch × Status, tapi CUMA buat baris yang Komitmen (field
    ditentukan lewat parameter commitField) jatuh di bulan yang dipilih
