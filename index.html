@@ -2497,6 +2497,15 @@
           <tbody id="mbbPainInfraStuckBody"></tbody>
         </table>
       </div>
+
+      <p class="section-title" style="font-size:13px;margin-top:16px;">📋 Detail Data — New Infra <span class="kpi-sub" id="mbbPainInfraDetailLabel" style="font-weight:500;"></span></p>
+      <p class="section-desc" id="mbbPainInfraDetailDesc">Klik salah satu sel di tabel New Infra di atas buat nampilin daftar order-nya di sini.</p>
+      <div class="table-card" style="overflow-x:auto;" id="mbbPainInfraDetailSection">
+        <table class="mbb-report-table">
+          <thead><tr><th>ID</th><th>Nama</th><th>Branch</th><th>STO</th><th>Status</th><th>Detil Progress</th></tr></thead>
+          <tbody id="mbbPainInfraDetailBody"><tr><td colspan="6" style="text-align:center;padding:20px;">Belum ada sel yang diklik.</td></tr></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- ========== NEW LINK ========== -->
@@ -2528,6 +2537,15 @@
           <tbody id="mbbPainLinkStuckBody"></tbody>
         </table>
       </div>
+
+      <p class="section-title" style="font-size:13px;margin-top:16px;">📋 Detail Data — New Link <span class="kpi-sub" id="mbbPainLinkDetailLabel" style="font-weight:500;"></span></p>
+      <p class="section-desc" id="mbbPainLinkDetailDesc">Klik salah satu sel di tabel New Link di atas buat nampilin daftar order-nya di sini.</p>
+      <div class="table-card" style="overflow-x:auto;" id="mbbPainLinkDetailSection">
+        <table class="mbb-report-table">
+          <thead><tr><th>ID</th><th>Nama</th><th>Branch</th><th>STO</th><th>Status</th><th>Detil Progress</th></tr></thead>
+          <tbody id="mbbPainLinkDetailBody"><tr><td colspan="6" style="text-align:center;padding:20px;">Belum ada sel yang diklik.</td></tr></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- ========== DUAL HOMING ========== -->
@@ -2551,19 +2569,13 @@
           <tbody id="mbbPainDualStuckBody"></tbody>
         </table>
       </div>
-    </div>
 
-    <!-- ========== DETAIL DATA (output klik) ========== -->
-    <hr class="rekap-divider">
-    <div class="section" id="mbbPainDetailSection">
-      <p class="section-title" style="font-size:15px;">📋 Detail Data <span class="kpi-sub" id="mbbPainDetailLabel" style="font-weight:500;"></span></p>
-      <p class="section-desc" id="mbbPainDetailDesc">Klik salah satu sel di tabel manapun di atas buat nampilin daftar order-nya di sini.</p>
-      <div class="table-card" style="overflow-x:auto;">
+      <p class="section-title" style="font-size:13px;margin-top:16px;">📋 Detail Data — Dual Homing <span class="kpi-sub" id="mbbPainDualDetailLabel" style="font-weight:500;"></span></p>
+      <p class="section-desc" id="mbbPainDualDetailDesc">Klik salah satu sel di tabel Dual Homing di atas buat nampilin daftar order-nya di sini.</p>
+      <div class="table-card" style="overflow-x:auto;" id="mbbPainDualDetailSection">
         <table class="mbb-report-table">
-          <thead>
-            <tr><th>Program</th><th>ID</th><th>Nama</th><th>Branch</th><th>STO</th><th>Status</th><th>Value</th></tr>
-          </thead>
-          <tbody id="mbbPainDetailBody"><tr><td colspan="7" style="text-align:center;padding:20px;">Belum ada sel yang diklik.</td></tr></tbody>
+          <thead><tr><th>ID</th><th>Nama</th><th>Branch</th><th>STO</th><th>Status</th><th>Detil Progress</th></tr></thead>
+          <tbody id="mbbPainDualDetailBody"><tr><td colspan="6" style="text-align:center;padding:20px;">Belum ada sel yang diklik.</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -10775,12 +10787,15 @@ function rekapTd(program, rowsSubset, displayValue, label, extraAttrs, targetPre
   return `<td class="rekap-clickable"${extraAttrs} data-rekap-key="${key}">${displayValue}</td>`;
 }
 function rekapRowDetail(program, row){
-  if(program === 'PT2') return { id: get(row,'iHLD LoP ID'), nama: get(row,'Nama Proyek'), branch: get(row,'Telkomsel Branch'), sto: get(row,'STO'), status: deriveStatus(get(row,'STAT FINAL')), value: parseNum(get(row,'PORT ACTUAL')) };
-  if(program === 'PT3 TA') return { id: pt3Get(row,'ID-IHLD'), nama: pt3Get(row,'NAMA LOP'), branch: pt3Get(row,'BRANCH FMC'), sto: pt3Get(row,'STO'), status: hemStripStatusPrefix(pt3RowStatusLabel(row)), value: pt3ParseNum(pt3Get(row,'PORT PLAN')) };
-  if(program === 'PT3 FH') return { id: pt3fhGet(row,'ID-IHLD'), nama: pt3fhGet(row,'NAMA LOP'), branch: pt3fhGet(row,'BRANCH FMC'), sto: pt3fhGet(row,'STO'), status: hemStripStatusPrefix(pt3fhRowStatusLabel(row)), value: pt3fhParseNum(pt3fhGet(row,'PORT PLAN')) };
-  if(program === 'MBB') return { id: mbbGet(row,'ID'), nama: mbbGet(row,'SITE NAME'), branch: mbbGet(row,'BRANCH'), sto: mbbGet(row,'STO'), status: hemStripStatusPrefix(mbbRowStatusLabel(row)), value: 1 };
-  return { id:'', nama:'', branch:'', sto:'', status:'', value:'' };
+  if(program === 'PT2') return { id: get(row,'iHLD LoP ID'), nama: get(row,'Nama Proyek'), branch: get(row,'Telkomsel Branch'), sto: get(row,'STO'), status: deriveStatus(get(row,'STAT FINAL')), value: parseNum(get(row,'PORT ACTUAL')), detil: '' };
+  if(program === 'PT3 TA') return { id: pt3Get(row,'ID-IHLD'), nama: pt3Get(row,'NAMA LOP'), branch: pt3Get(row,'BRANCH FMC'), sto: pt3Get(row,'STO'), status: hemStripStatusPrefix(pt3RowStatusLabel(row)), value: pt3ParseNum(pt3Get(row,'PORT PLAN')), detil: pt3Get(row,'DETAIL STATUS') };
+  if(program === 'PT3 FH') return { id: pt3fhGet(row,'ID-IHLD'), nama: pt3fhGet(row,'NAMA LOP'), branch: pt3fhGet(row,'BRANCH FMC'), sto: pt3fhGet(row,'STO'), status: hemStripStatusPrefix(pt3fhRowStatusLabel(row)), value: pt3fhParseNum(pt3fhGet(row,'PORT PLAN')), detil: pt3fhGet(row,'DETAIL STATUS') };
+  if(program === 'MBB') return { id: mbbGet(row,'ID'), nama: mbbGet(row,'SITE NAME'), branch: mbbGet(row,'BRANCH'), sto: mbbGet(row,'STO'), status: hemStripStatusPrefix(mbbRowStatusLabel(row)), value: 1, detil: mbbGet(row,'DETIL PROGRESS') };
+  return { id:'', nama:'', branch:'', sto:'', status:'', value:'', detil:'' };
 }
+// Target yang nampilin kolom "Detil Progress" (6 kolom: ID/Nama/Branch/STO/Status/Detil)
+// alih-alih format umum 7 kolom (Program/ID/Nama/Branch/STO/Status/Value).
+const REKAP_DETIL_PROGRESS_TARGETS = new Set(['mbbPainInfra','mbbPainLink','mbbPainDual']);
 function renderRekapDetailOutput(key){
   const entry = rekapCellRegistry[key];
   if(!entry) return;
@@ -10788,17 +10803,22 @@ function renderRekapDetailOutput(key){
   const labelEl = document.getElementById(prefix + 'DetailLabel');
   const descEl = document.getElementById(prefix + 'DetailDesc');
   const bodyEl = document.getElementById(prefix + 'DetailBody');
+  const showDetil = REKAP_DETIL_PROGRESS_TARGETS.has(prefix);
   if(labelEl) labelEl.textContent = `— ${entry.label} (${entry.rows.length.toLocaleString('id-ID')} baris)`;
   if(descEl) descEl.textContent = `Menampilkan detail order untuk: ${entry.label}`;
   if(bodyEl){
     const shown = entry.rows.slice(0,500);
+    const colCount = showDetil ? 6 : 7;
     let html = shown.map(row=>{
       const d = rekapRowDetail(entry.program, row);
+      if(showDetil){
+        return `<tr><td>${d.id||'—'}</td><td class="name">${d.nama||'—'}</td><td>${d.branch||'—'}</td><td>${d.sto||'—'}</td><td>${d.status||'—'}</td><td class="name" style="max-width:420px;">${d.detil||'—'}</td></tr>`;
+      }
       const valStr = typeof d.value === 'number' ? d.value.toLocaleString('id-ID') : (d.value||'—');
       return `<tr><td>${entry.program}</td><td>${d.id||'—'}</td><td class="name">${d.nama||'—'}</td><td>${d.branch||'—'}</td><td>${d.sto||'—'}</td><td>${d.status||'—'}</td><td>${valStr}</td></tr>`;
-    }).join('') || `<tr><td colspan="7" style="text-align:center;padding:20px;">Tidak ada data.</td></tr>`;
+    }).join('') || `<tr><td colspan="${colCount}" style="text-align:center;padding:20px;">Tidak ada data.</td></tr>`;
     if(entry.rows.length > 500){
-      html += `<tr><td colspan="7" style="text-align:center;padding:10px;color:var(--text-faint);">...dan ${(entry.rows.length-500).toLocaleString('id-ID')} baris lainnya (dibatasi 500 buat performa)</td></tr>`;
+      html += `<tr><td colspan="${colCount}" style="text-align:center;padding:10px;color:var(--text-faint);">...dan ${(entry.rows.length-500).toLocaleString('id-ID')} baris lainnya (dibatasi 500 buat performa)</td></tr>`;
     }
     bodyEl.innerHTML = html;
   }
@@ -11035,11 +11055,11 @@ function renderMbbPainPoint(){
     });
 
     renderRekapKpiRow('mbbPain'+cat.key+'KpiRow', [
-      {label:'Total', value: total.toLocaleString('id-ID'), color:'var(--text)', rows: rowsCat, program:'MBB', targetPrefix:'mbbPain', clickLabel:`MBB ${cat.label} — Semua Order`},
-      {label:'On Air', value: onAirRows.length.toLocaleString('id-ID'), sub: rekapPct(onAirRows.length,total), color:'var(--emerald)', rows: onAirRows, program:'MBB', targetPrefix:'mbbPain', clickLabel:`MBB ${cat.label} — On Air`},
-      {label:'Drop', value: dropRows.length.toLocaleString('id-ID'), sub: rekapPct(dropRows.length,total), color:'var(--red)', rows: dropRows, program:'MBB', targetPrefix:'mbbPain', clickLabel:`MBB ${cat.label} — Drop`},
-      {label:'Open', value: stuckRows.length.toLocaleString('id-ID'), sub: rekapPct(stuckRows.length,total), color:'#D9A441', rows: stuckRows, program:'MBB', targetPrefix:'mbbPain', clickLabel:`MBB ${cat.label} — Open`},
-      {label:'Order Baru', value: blankRows.length.toLocaleString('id-ID'), sub: rekapPct(blankRows.length,total), color:'var(--text-faint)', rows: blankRows, program:'MBB', targetPrefix:'mbbPain', clickLabel:`MBB ${cat.label} — Order Baru`},
+      {label:'Total', value: total.toLocaleString('id-ID'), color:'var(--text)', rows: rowsCat, program:'MBB', targetPrefix:'mbbPain'+cat.key, clickLabel:`MBB ${cat.label} — Semua Order`},
+      {label:'On Air', value: onAirRows.length.toLocaleString('id-ID'), sub: rekapPct(onAirRows.length,total), color:'var(--emerald)', rows: onAirRows, program:'MBB', targetPrefix:'mbbPain'+cat.key, clickLabel:`MBB ${cat.label} — On Air`},
+      {label:'Drop', value: dropRows.length.toLocaleString('id-ID'), sub: rekapPct(dropRows.length,total), color:'var(--red)', rows: dropRows, program:'MBB', targetPrefix:'mbbPain'+cat.key, clickLabel:`MBB ${cat.label} — Drop`},
+      {label:'Open', value: stuckRows.length.toLocaleString('id-ID'), sub: rekapPct(stuckRows.length,total), color:'#D9A441', rows: stuckRows, program:'MBB', targetPrefix:'mbbPain'+cat.key, clickLabel:`MBB ${cat.label} — Open`},
+      {label:'Order Baru', value: blankRows.length.toLocaleString('id-ID'), sub: rekapPct(blankRows.length,total), color:'var(--text-faint)', rows: blankRows, program:'MBB', targetPrefix:'mbbPain'+cat.key, clickLabel:`MBB ${cat.label} — Order Baru`},
     ]);
 
     // Breakdown alasan Drop (SUB STATUS), diurut dari yang paling sering
@@ -11054,7 +11074,7 @@ function renderMbbPainPoint(){
       const entries = Object.entries(reasonGroups).sort((a,b)=> b[1].length - a[1].length);
       dropBody.innerHTML = entries.map(([reason, rowsArr])=>{
         const nilaiSum = rowsArr.reduce((s,r)=> s + mbbParseNum(mbbGet(r,'NILAI PLAN')), 0);
-        const countTd = rekapTd('MBB', rowsArr, rowsArr.length.toLocaleString('id-ID'), `MBB ${cat.label} — Drop: ${reason}`, '', 'mbbPain');
+        const countTd = rekapTd('MBB', rowsArr, rowsArr.length.toLocaleString('id-ID'), `MBB ${cat.label} — Drop: ${reason}`, '', 'mbbPain'+cat.key);
         return `<tr><td class="name">${reason}</td>${countTd}<td>Rp ${nilaiSum.toLocaleString('id-ID')}</td></tr>`;
       }).join('') || `<tr><td colspan="3" style="text-align:center;padding:10px;">Tidak ada yang drop.</td></tr>`;
     }
@@ -11070,7 +11090,7 @@ function renderMbbPainPoint(){
       });
       const entries = Object.entries(branchGroups).sort((a,b)=> b[1].length - a[1].length);
       branchBody.innerHTML = entries.map(([branch, rowsArr])=>{
-        const countTd = rekapTd('MBB', rowsArr, rowsArr.length.toLocaleString('id-ID'), `MBB ${cat.label} — Drop di ${branch}`, '', 'mbbPain');
+        const countTd = rekapTd('MBB', rowsArr, rowsArr.length.toLocaleString('id-ID'), `MBB ${cat.label} — Drop di ${branch}`, '', 'mbbPain'+cat.key);
         return `<tr><td class="name">${branch}</td>${countTd}</tr>`;
       }).join('') || `<tr><td colspan="2" style="text-align:center;padding:10px;">Tidak ada yang drop.</td></tr>`;
     }
@@ -11080,7 +11100,7 @@ function renderMbbPainPoint(){
     const stuckBody = document.getElementById('mbbPain'+cat.key+'StuckBody');
     if(stuckBody){
       stuckBody.innerHTML = stuckRows.map(r=>{
-        const idTd = rekapTd('MBB', [r], mbbGet(r,'ID')||'—', `MBB ${cat.label} — Order ${mbbGet(r,'ID')||''}`, '', 'mbbPain');
+        const idTd = rekapTd('MBB', [r], mbbGet(r,'ID')||'—', `MBB ${cat.label} — Order ${mbbGet(r,'ID')||''}`, '', 'mbbPain'+cat.key);
         return `<tr>
           ${idTd}
           <td>${mbbGet(r,'BRANCH')||'—'}</td>
