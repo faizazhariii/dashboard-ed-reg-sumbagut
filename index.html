@@ -373,6 +373,7 @@
     <button class="page-tab" id="tabBtnGolive" type="button" style="display:none;">🟢 Golive</button>
     <button class="page-tab" id="tabBtnWisa" type="button" style="display:none;">🖼️ WISA</button>
     <button class="page-tab active" id="tabBtnRekap" type="button">📊 Rekap Tsel</button>
+    <button class="page-tab" id="tabBtnMbbPain" type="button">MBB</button>
   </div>
 
   <div id="pagePT2" style="display:none;">
@@ -2452,6 +2453,115 @@
             <tr><th>Program</th><th>ID</th><th>Nama</th><th>Branch</th><th>STO</th><th>Status</th><th>Value</th></tr>
           </thead>
           <tbody id="rekapDetailBody"><tr><td colspan="7" style="text-align:center;padding:20px;">Belum ada sel yang diklik.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    </div>
+
+    <div id="pageMbbPain" style="display:none;">
+
+    <div class="section" style="margin-top:0;">
+      <p class="section-title" style="margin-bottom:2px;">MBB — Pain Point Analysis</p>
+      <p class="section-desc" style="margin:0;">Breakdown alasan Drop & order yang masih stuck, per kategori SOW. Klik sel manapun buat lihat detail order-nya di bagian bawah.</p>
+    </div>
+
+    <!-- ========== NEW INFRA ========== -->
+    <hr class="rekap-divider">
+    <div class="section">
+      <p class="section-title" style="font-size:15px;">New Infra Regular</p>
+      <div class="kpi-row" id="mbbPainInfraKpiRow"></div>
+
+      <p class="section-title" style="font-size:13px;margin-top:16px;">Breakdown Alasan Drop</p>
+      <div class="table-card" style="overflow-x:auto;max-width:520px;">
+        <table class="pivot-table">
+          <thead><tr><th>Sub Status (Alasan)</th><th>Jumlah</th><th>Nilai Plan</th></tr></thead>
+          <tbody id="mbbPainInfraDropBody"></tbody>
+        </table>
+      </div>
+
+      <p class="section-title" style="font-size:13px;margin-top:16px;">Sebaran Branch yang Drop</p>
+      <div class="table-card" style="overflow-x:auto;max-width:420px;">
+        <table class="pivot-table">
+          <thead><tr><th>Branch</th><th>Jumlah Drop</th></tr></thead>
+          <tbody id="mbbPainInfraBranchBody"></tbody>
+        </table>
+      </div>
+
+      <p class="section-title" style="font-size:13px;margin-top:16px;">Order yang Masih Stuck (bukan Drop, bukan On Air)</p>
+      <div class="table-card" style="overflow-x:auto;">
+        <table class="mbb-report-table">
+          <thead><tr><th>ID</th><th>Branch</th><th>STO</th><th>Status</th><th>Sub Status</th></tr></thead>
+          <tbody id="mbbPainInfraStuckBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ========== NEW LINK ========== -->
+    <hr class="rekap-divider">
+    <div class="section">
+      <p class="section-title" style="font-size:15px;">New Link Regular</p>
+      <div class="kpi-row" id="mbbPainLinkKpiRow"></div>
+
+      <p class="section-title" style="font-size:13px;margin-top:16px;">Breakdown Alasan Drop</p>
+      <div class="table-card" style="overflow-x:auto;max-width:520px;">
+        <table class="pivot-table">
+          <thead><tr><th>Sub Status (Alasan)</th><th>Jumlah</th><th>Nilai Plan</th></tr></thead>
+          <tbody id="mbbPainLinkDropBody"></tbody>
+        </table>
+      </div>
+
+      <p class="section-title" style="font-size:13px;margin-top:16px;">Sebaran Branch yang Drop</p>
+      <div class="table-card" style="overflow-x:auto;max-width:420px;">
+        <table class="pivot-table">
+          <thead><tr><th>Branch</th><th>Jumlah Drop</th></tr></thead>
+          <tbody id="mbbPainLinkBranchBody"></tbody>
+        </table>
+      </div>
+
+      <p class="section-title" style="font-size:13px;margin-top:16px;">Order yang Masih Stuck (bukan Drop, bukan On Air)</p>
+      <div class="table-card" style="overflow-x:auto;">
+        <table class="mbb-report-table">
+          <thead><tr><th>ID</th><th>Branch</th><th>STO</th><th>Status</th><th>Sub Status</th></tr></thead>
+          <tbody id="mbbPainLinkStuckBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ========== DUAL HOMING ========== -->
+    <hr class="rekap-divider">
+    <div class="section">
+      <p class="section-title" style="font-size:15px;">Dual Homing</p>
+      <div class="kpi-row" id="mbbPainDualKpiRow"></div>
+
+      <p class="section-title" style="font-size:13px;margin-top:16px;">Breakdown Alasan Drop</p>
+      <div class="table-card" style="overflow-x:auto;max-width:520px;">
+        <table class="pivot-table">
+          <thead><tr><th>Sub Status (Alasan)</th><th>Jumlah</th><th>Nilai Plan</th></tr></thead>
+          <tbody id="mbbPainDualDropBody"></tbody>
+        </table>
+      </div>
+
+      <p class="section-title" style="font-size:13px;margin-top:16px;">Order yang Masih Stuck (bukan Drop, bukan On Air)</p>
+      <div class="table-card" style="overflow-x:auto;">
+        <table class="mbb-report-table">
+          <thead><tr><th>ID</th><th>Branch</th><th>STO</th><th>Status</th><th>Sub Status</th></tr></thead>
+          <tbody id="mbbPainDualStuckBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ========== DETAIL DATA (output klik) ========== -->
+    <hr class="rekap-divider">
+    <div class="section" id="mbbPainDetailSection">
+      <p class="section-title" style="font-size:15px;">📋 Detail Data <span class="kpi-sub" id="mbbPainDetailLabel" style="font-weight:500;"></span></p>
+      <p class="section-desc" id="mbbPainDetailDesc">Klik salah satu sel di tabel manapun di atas buat nampilin daftar order-nya di sini.</p>
+      <div class="table-card" style="overflow-x:auto;">
+        <table class="mbb-report-table">
+          <thead>
+            <tr><th>Program</th><th>ID</th><th>Nama</th><th>Branch</th><th>STO</th><th>Status</th><th>Value</th></tr>
+          </thead>
+          <tbody id="mbbPainDetailBody"><tr><td colspan="7" style="text-align:center;padding:20px;">Belum ada sel yang diklik.</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -5900,7 +6010,7 @@ document.getElementById('oloNextPage').onclick = ()=>{ oloCurrentPage++; oloRend
 
 /* ---------- Tab switching (3 tab) ---------- */
 function switchTab(active){
-  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], qeRelok:['tabBtnQeRelok','pageQeRelok'], lapPt2:['tabBtnLapPt2','pageLapPt2'], komitmenGL:['tabBtnKomitmenGL','pageKomitmenGL'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], wisa:['tabBtnWisa','pageWisa'], rekap:['tabBtnRekap','pageRekap'] };
+  const tabs = { pt2:['tabBtnPT2','pagePT2'], hem:['tabBtnHem','pageHem'], olo:['tabBtnOlo','pageOlo'], mbb:['tabBtnMbb','pageMbb'], pt3:['tabBtnPt3','pagePt3'], pt3fh:['tabBtnPt3Fh','pagePt3Fh'], qeRelok:['tabBtnQeRelok','pageQeRelok'], lapPt2:['tabBtnLapPt2','pageLapPt2'], komitmenGL:['tabBtnKomitmenGL','pageKomitmenGL'], checklist:['tabBtnChecklist','pageChecklist'], needOlt:['tabBtnNeedOlt','pageNeedOlt'], golive:['tabBtnGolive','pageGolive'], wisa:['tabBtnWisa','pageWisa'], rekap:['tabBtnRekap','pageRekap'], mbbPain:['tabBtnMbbPain','pageMbbPain'] };
   Object.keys(tabs).forEach(key=>{
     const [btnId, pageId] = tabs[key];
     const isActive = key === active;
@@ -5922,6 +6032,7 @@ document.getElementById('tabBtnNeedOlt').onclick = ()=> switchTab('needOlt');
 document.getElementById('tabBtnGolive').onclick = ()=> switchTab('golive');
 document.getElementById('tabBtnWisa').onclick = ()=> { switchTab('wisa'); wisaLoadPhoto(); };
 document.getElementById('tabBtnRekap').onclick = ()=> switchTab('rekap');
+document.getElementById('tabBtnMbbPain').onclick = ()=> switchTab('mbbPain');
 
 const hemStageDetailCloseBtn = document.getElementById('hemStageDetailCloseBtn');
 if(hemStageDetailCloseBtn) hemStageDetailCloseBtn.onclick = hemHideStageDetail;
@@ -6167,6 +6278,7 @@ function mbbBuildDashboard(){
   renderKomitmenGLPage();
   renderMbbNeedOltPage();
   renderRekapMBB();
+  renderMbbPainPoint();
 }
 
 const MBB_CATEGORY_LABELS = { all:'All Order', drop:'Drop', onair:'On Air', ogp:'OGP' };
@@ -10637,11 +10749,15 @@ function rekapPct(n, total){ return total ? (n/total*100).toFixed(1)+'%' : '0%';
    ============================================================ */
 let rekapCellRegistry = {};
 let rekapCellCounter = 0;
-function rekapTd(program, rowsSubset, displayValue, label, extraAttrs){
+/* targetPrefix nentuin section "Detail Data" mana yang dipakai pas sel ini
+   diklik — "rekap" buat halaman Rekap Tsel, "mbbPain" buat halaman MBB
+   Pain Point (masing-masing punya tabel Detail Data sendiri di bawahnya). */
+function rekapTd(program, rowsSubset, displayValue, label, extraAttrs, targetPrefix){
   extraAttrs = extraAttrs || '';
+  targetPrefix = targetPrefix || 'rekap';
   if(!rowsSubset || rowsSubset.length === 0) return `<td${extraAttrs}>${displayValue}</td>`;
   const key = 'rk' + (rekapCellCounter++);
-  rekapCellRegistry[key] = { program, rows: rowsSubset, label };
+  rekapCellRegistry[key] = { program, rows: rowsSubset, label, targetPrefix };
   return `<td class="rekap-clickable"${extraAttrs} data-rekap-key="${key}">${displayValue}</td>`;
 }
 function rekapRowDetail(program, row){
@@ -10654,9 +10770,10 @@ function rekapRowDetail(program, row){
 function renderRekapDetailOutput(key){
   const entry = rekapCellRegistry[key];
   if(!entry) return;
-  const labelEl = document.getElementById('rekapDetailLabel');
-  const descEl = document.getElementById('rekapDetailDesc');
-  const bodyEl = document.getElementById('rekapDetailBody');
+  const prefix = entry.targetPrefix || 'rekap';
+  const labelEl = document.getElementById(prefix + 'DetailLabel');
+  const descEl = document.getElementById(prefix + 'DetailDesc');
+  const bodyEl = document.getElementById(prefix + 'DetailBody');
   if(labelEl) labelEl.textContent = `— ${entry.label} (${entry.rows.length.toLocaleString('id-ID')} baris)`;
   if(descEl) descEl.textContent = `Menampilkan detail order untuk: ${entry.label}`;
   if(bodyEl){
@@ -10671,16 +10788,16 @@ function renderRekapDetailOutput(key){
     }
     bodyEl.innerHTML = html;
   }
-  const section = document.getElementById('rekapDetailSection');
+  const section = document.getElementById(prefix + 'DetailSection');
   if(section) section.scrollIntoView({behavior:'smooth', block:'start'});
 }
 let rekapDetailWired = false;
 function rekapWireDetailClicks(){
   if(rekapDetailWired) return;
   rekapDetailWired = true;
-  const page = document.getElementById('pageRekap');
-  if(!page) return;
-  page.addEventListener('click', (e)=>{
+  // Dipasang di document biar jalan di SEMUA halaman (Rekap Tsel, MBB Pain
+  // Point, dst) yang punya sel ber-class .rekap-clickable, bukan cuma 1 page.
+  document.addEventListener('click', (e)=>{
     const td = e.target.closest('.rekap-clickable');
     if(td && td.dataset.rekapKey) renderRekapDetailOutput(td.dataset.rekapKey);
   });
@@ -10876,6 +10993,89 @@ function renderRekapPT3FH(){
   const p1Rows = pt3fhAGG.rows.filter(row => (pt3fhGet(row,'PRIORITAS 1 BY TSEL')||'').toUpperCase().trim() === 'P1');
   renderRekapPivotGeneric('PT3 FH', 'rekapPt3fhP1KpiRowDUMMY', 'rekapPt3fhP1PivotHead', 'rekapPt3fhP1PivotBody', {rows:p1Rows}, pt3fhGet, pt3fhRowStatusLabel, pt3fhCategory, pt3fhStageOrderIndex, (row)=> pt3fhParseNum(pt3fhGet(row,'PORT PLAN')));
 }
+/* ============================================================
+   Halaman "MBB" — Pain Point Analysis. Breakdown alasan Drop &
+   order yang masih stuck, per kategori SOW (New Infra/New Link/
+   Dual Homing). Semua data LIVE dari mbbAGG.rows (bukan snapshot).
+   ============================================================ */
+function renderMbbPainPoint(){
+  if(!mbbAGG) return;
+  rekapWireDetailClicks();
+
+  const categories = [
+    { key:'Infra', label:'New Infra Regular', sowMatch: (row)=> (mbbGet(row,'SOW PRE ORDER')||'').toUpperCase() === 'NEW INFRA REGULAR' },
+    { key:'Link',  label:'New Link Regular',  sowMatch: (row)=> (mbbGet(row,'SOW PRE ORDER')||'').toUpperCase() === 'NEW LINK REGULAR' },
+    { key:'Dual',  label:'Dual Homing',       sowMatch: (row)=> (mbbGet(row,'SOW PRE ORDER')||'').toUpperCase().includes('DUAL') },
+  ];
+
+  categories.forEach(cat=>{
+    const rowsCat = mbbAGG.rows.filter(cat.sowMatch);
+    const total = rowsCat.length;
+
+    const onAirRows = rowsCat.filter(r => (mbbGet(r,'STATUS')||'').includes('On Air'));
+    const dropRows = rowsCat.filter(r => (mbbGet(r,'STATUS')||'').includes('Drop'));
+    const blankRows = rowsCat.filter(r => !(mbbGet(r,'STATUS')||'').toString().trim());
+    const stuckRows = rowsCat.filter(r => {
+      const s = (mbbGet(r,'STATUS')||'').toString().trim();
+      return s && !s.includes('On Air') && !s.includes('Drop');
+    });
+
+    renderRekapKpiRow('mbbPain'+cat.key+'KpiRow', [
+      {label:'Total', value: total.toLocaleString('id-ID'), color:'var(--text)'},
+      {label:'On Air', value: onAirRows.length.toLocaleString('id-ID'), sub: rekapPct(onAirRows.length,total), color:'var(--emerald)'},
+      {label:'Drop', value: dropRows.length.toLocaleString('id-ID'), sub: rekapPct(dropRows.length,total), color:'var(--red)'},
+      {label:'Stuck', value: stuckRows.length.toLocaleString('id-ID'), sub: rekapPct(stuckRows.length,total), color:'#D9A441'},
+      {label:'Belum Diproses', value: blankRows.length.toLocaleString('id-ID'), sub: rekapPct(blankRows.length,total), color:'var(--text-faint)'},
+    ]);
+
+    // Breakdown alasan Drop (SUB STATUS), diurut dari yang paling sering
+    const dropBody = document.getElementById('mbbPain'+cat.key+'DropBody');
+    if(dropBody){
+      const reasonGroups = {};
+      dropRows.forEach(r=>{
+        const reason = mbbGet(r,'SUB STATUS') || 'Tidak Diketahui';
+        if(!reasonGroups[reason]) reasonGroups[reason] = [];
+        reasonGroups[reason].push(r);
+      });
+      const entries = Object.entries(reasonGroups).sort((a,b)=> b[1].length - a[1].length);
+      dropBody.innerHTML = entries.map(([reason, rowsArr])=>{
+        const nilaiSum = rowsArr.reduce((s,r)=> s + mbbParseNum(mbbGet(r,'NILAI PLAN')), 0);
+        const countTd = rekapTd('MBB', rowsArr, rowsArr.length.toLocaleString('id-ID'), `MBB ${cat.label} — Drop: ${reason}`, '', 'mbbPain');
+        return `<tr><td class="name">${reason}</td>${countTd}<td>Rp ${nilaiSum.toLocaleString('id-ID')}</td></tr>`;
+      }).join('') || `<tr><td colspan="3" style="text-align:center;padding:10px;">Tidak ada yang drop.</td></tr>`;
+    }
+
+    // Sebaran branch yang drop
+    const branchBody = document.getElementById('mbbPain'+cat.key+'BranchBody');
+    if(branchBody){
+      const branchGroups = {};
+      dropRows.forEach(r=>{
+        const b = mbbGet(r,'BRANCH') || 'Tidak Diketahui';
+        if(!branchGroups[b]) branchGroups[b] = [];
+        branchGroups[b].push(r);
+      });
+      const entries = Object.entries(branchGroups).sort((a,b)=> b[1].length - a[1].length);
+      branchBody.innerHTML = entries.map(([branch, rowsArr])=>{
+        const countTd = rekapTd('MBB', rowsArr, rowsArr.length.toLocaleString('id-ID'), `MBB ${cat.label} — Drop di ${branch}`, '', 'mbbPain');
+        return `<tr><td class="name">${branch}</td>${countTd}</tr>`;
+      }).join('') || `<tr><td colspan="2" style="text-align:center;padding:10px;">Tidak ada yang drop.</td></tr>`;
+    }
+
+    // Order yang masih stuck (bukan Drop, bukan On Air, bukan kosong)
+    const stuckBody = document.getElementById('mbbPain'+cat.key+'StuckBody');
+    if(stuckBody){
+      stuckBody.innerHTML = stuckRows.map(r=>`
+        <tr>
+          <td>${mbbGet(r,'ID')||'—'}</td>
+          <td>${mbbGet(r,'BRANCH')||'—'}</td>
+          <td>${mbbGet(r,'STO')||'—'}</td>
+          <td>${mbbGet(r,'STATUS')||'—'}</td>
+          <td>${mbbGet(r,'SUB STATUS')||'—'}</td>
+        </tr>`).join('') || `<tr><td colspan="5" style="text-align:center;padding:10px;">🎉 Tidak ada yang stuck.</td></tr>`;
+    }
+  });
+}
+
 function renderRekapMBB(){
   if(!mbbAGG) return;
   const mbbCategoryFn = (row)=> hemCategoryOfLabel(mbbRowStatusLabel(row));
