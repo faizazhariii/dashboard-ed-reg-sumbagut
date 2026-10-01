@@ -2517,8 +2517,8 @@
       <p class="section-desc" id="mbbPainInfraDetailDesc">Klik salah satu sel di tabel New Infra di atas buat nampilin daftar order-nya di sini.</p>
       <div class="table-card" style="overflow-x:auto;" id="mbbPainInfraDetailSection">
         <table class="mbb-report-table">
-          <thead><tr><th>ID</th><th>Nama</th><th>Branch</th><th>STO</th><th>Batch WO</th><th>Status</th><th>Detil Progress</th></tr></thead>
-          <tbody id="mbbPainInfraDetailBody"><tr><td colspan="7" style="text-align:center;padding:20px;">Belum ada sel yang diklik.</td></tr></tbody>
+          <thead><tr><th>ID</th><th>Nama</th><th>Branch</th><th>STO</th><th>Batch WO</th><th>Kabel FO DRM</th><th>Status</th><th>Detil Progress</th></tr></thead>
+          <tbody id="mbbPainInfraDetailBody"><tr><td colspan="8" style="text-align:center;padding:20px;">Belum ada sel yang diklik.</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -2557,8 +2557,8 @@
       <p class="section-desc" id="mbbPainLinkDetailDesc">Klik salah satu sel di tabel New Link di atas buat nampilin daftar order-nya di sini.</p>
       <div class="table-card" style="overflow-x:auto;" id="mbbPainLinkDetailSection">
         <table class="mbb-report-table">
-          <thead><tr><th>ID</th><th>Nama</th><th>Branch</th><th>STO</th><th>Batch WO</th><th>Status</th><th>Detil Progress</th></tr></thead>
-          <tbody id="mbbPainLinkDetailBody"><tr><td colspan="7" style="text-align:center;padding:20px;">Belum ada sel yang diklik.</td></tr></tbody>
+          <thead><tr><th>ID</th><th>Nama</th><th>Branch</th><th>STO</th><th>Batch WO</th><th>Kabel FO DRM</th><th>Status</th><th>Detil Progress</th></tr></thead>
+          <tbody id="mbbPainLinkDetailBody"><tr><td colspan="8" style="text-align:center;padding:20px;">Belum ada sel yang diklik.</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -2589,8 +2589,8 @@
       <p class="section-desc" id="mbbPainDualDetailDesc">Klik salah satu sel di tabel Dual Homing di atas buat nampilin daftar order-nya di sini.</p>
       <div class="table-card" style="overflow-x:auto;" id="mbbPainDualDetailSection">
         <table class="mbb-report-table">
-          <thead><tr><th>ID</th><th>Nama</th><th>Branch</th><th>STO</th><th>Batch WO</th><th>Status</th><th>Detil Progress</th></tr></thead>
-          <tbody id="mbbPainDualDetailBody"><tr><td colspan="7" style="text-align:center;padding:20px;">Belum ada sel yang diklik.</td></tr></tbody>
+          <thead><tr><th>ID</th><th>Nama</th><th>Branch</th><th>STO</th><th>Batch WO</th><th>Kabel FO DRM</th><th>Status</th><th>Detil Progress</th></tr></thead>
+          <tbody id="mbbPainDualDetailBody"><tr><td colspan="8" style="text-align:center;padding:20px;">Belum ada sel yang diklik.</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -10802,15 +10802,15 @@ function rekapTd(program, rowsSubset, displayValue, label, extraAttrs, targetPre
   return `<td class="rekap-clickable"${extraAttrs} data-rekap-key="${key}">${displayValue}</td>`;
 }
 function rekapRowDetail(program, row){
-  if(program === 'PT2') return { id: get(row,'iHLD LoP ID'), nama: get(row,'Nama Proyek'), branch: get(row,'Telkomsel Branch'), sto: get(row,'STO'), status: deriveStatus(get(row,'STAT FINAL')), value: parseNum(get(row,'PORT ACTUAL')), detil: '', batchWo: '' };
-  if(program === 'PT3 TA') return { id: pt3Get(row,'ID-IHLD'), nama: pt3Get(row,'NAMA LOP'), branch: pt3Get(row,'BRANCH FMC'), sto: pt3Get(row,'STO'), status: hemStripStatusPrefix(pt3RowStatusLabel(row)), value: pt3ParseNum(pt3Get(row,'PORT PLAN')), detil: pt3Get(row,'DETAIL STATUS'), batchWo: pt3Get(row,'BATCH PROGRAM') };
-  if(program === 'PT3 FH') return { id: pt3fhGet(row,'ID-IHLD'), nama: pt3fhGet(row,'NAMA LOP'), branch: pt3fhGet(row,'BRANCH FMC'), sto: pt3fhGet(row,'STO'), status: hemStripStatusPrefix(pt3fhRowStatusLabel(row)), value: pt3fhParseNum(pt3fhGet(row,'PORT PLAN')), detil: pt3fhGet(row,'DETAIL STATUS'), batchWo: pt3fhGet(row,'BATCH PROGRAM') };
-  if(program === 'MBB') return { id: mbbGet(row,'ID'), nama: mbbGet(row,'SITE NAME'), branch: mbbGet(row,'BRANCH'), sto: mbbGet(row,'STO'), status: hemStripStatusPrefix(mbbRowStatusLabel(row)), value: 1, detil: mbbGet(row,'DETIL PROGRESS'), batchWo: mbbGet(row,'BATCH WO') };
-  return { id:'', nama:'', branch:'', sto:'', status:'', value:'', detil:'', batchWo:'' };
+  if(program === 'PT2') return { id: get(row,'iHLD LoP ID'), nama: get(row,'Nama Proyek'), branch: get(row,'Telkomsel Branch'), sto: get(row,'STO'), status: deriveStatus(get(row,'STAT FINAL')), value: parseNum(get(row,'PORT ACTUAL')), detil: '', batchWo: '', kabelFoDrm: '' };
+  if(program === 'PT3 TA') return { id: pt3Get(row,'ID-IHLD'), nama: pt3Get(row,'NAMA LOP'), branch: pt3Get(row,'BRANCH FMC'), sto: pt3Get(row,'STO'), status: hemStripStatusPrefix(pt3RowStatusLabel(row)), value: pt3ParseNum(pt3Get(row,'PORT PLAN')), detil: pt3Get(row,'DETAIL STATUS'), batchWo: pt3Get(row,'BATCH PROGRAM'), kabelFoDrm: '' };
+  if(program === 'PT3 FH') return { id: pt3fhGet(row,'ID-IHLD'), nama: pt3fhGet(row,'NAMA LOP'), branch: pt3fhGet(row,'BRANCH FMC'), sto: pt3fhGet(row,'STO'), status: hemStripStatusPrefix(pt3fhRowStatusLabel(row)), value: pt3fhParseNum(pt3fhGet(row,'PORT PLAN')), detil: pt3fhGet(row,'DETAIL STATUS'), batchWo: pt3fhGet(row,'BATCH PROGRAM'), kabelFoDrm: '' };
+  if(program === 'MBB') return { id: mbbGet(row,'ID'), nama: mbbGet(row,'SITE NAME'), branch: mbbGet(row,'BRANCH'), sto: mbbGet(row,'STO'), status: hemStripStatusPrefix(mbbRowStatusLabel(row)), value: 1, detil: mbbGet(row,'DETIL PROGRESS'), batchWo: mbbGet(row,'BATCH WO'), kabelFoDrm: mbbGet(row,'KABEL FO DRM') };
+  return { id:'', nama:'', branch:'', sto:'', status:'', value:'', detil:'', batchWo:'', kabelFoDrm:'' };
 }
-// Target yang nampilin kolom "Batch WO" + "Detil Progress" (7 kolom: ID/Nama/
-// Branch/STO/Batch WO/Status/Detil) alih-alih format umum 7 kolom
-// (Program/ID/Nama/Branch/STO/Status/Value).
+// Target yang nampilin kolom "Batch WO" + "Kabel FO DRM" + "Detil Progress"
+// (8 kolom: ID/Nama/Branch/STO/Batch WO/Kabel FO DRM/Status/Detil) alih-alih
+// format umum 7 kolom (Program/ID/Nama/Branch/STO/Status/Value).
 const REKAP_DETIL_PROGRESS_TARGETS = new Set(['mbbPainInfra','mbbPainLink','mbbPainDual']);
 function renderRekapDetailOutput(key){
   const entry = rekapCellRegistry[key];
@@ -10824,11 +10824,11 @@ function renderRekapDetailOutput(key){
   if(descEl) descEl.textContent = `Menampilkan detail order untuk: ${entry.label}`;
   if(bodyEl){
     const shown = entry.rows.slice(0,500);
-    const colCount = 7;
+    const colCount = showDetil ? 8 : 7;
     let html = shown.map(row=>{
       const d = rekapRowDetail(entry.program, row);
       if(showDetil){
-        return `<tr><td>${d.id||'—'}</td><td class="name">${d.nama||'—'}</td><td>${d.branch||'—'}</td><td>${d.sto||'—'}</td><td>${d.batchWo||'—'}</td><td>${d.status||'—'}</td><td class="name" style="max-width:420px;">${d.detil||'—'}</td></tr>`;
+        return `<tr><td>${d.id||'—'}</td><td class="name">${d.nama||'—'}</td><td>${d.branch||'—'}</td><td>${d.sto||'—'}</td><td>${d.batchWo||'—'}</td><td>${d.kabelFoDrm||'—'}</td><td>${d.status||'—'}</td><td class="name" style="max-width:420px;">${d.detil||'—'}</td></tr>`;
       }
       const valStr = typeof d.value === 'number' ? d.value.toLocaleString('id-ID') : (d.value||'—');
       return `<tr><td>${entry.program}</td><td>${d.id||'—'}</td><td class="name">${d.nama||'—'}</td><td>${d.branch||'—'}</td><td>${d.sto||'—'}</td><td>${d.status||'—'}</td><td>${valStr}</td></tr>`;
