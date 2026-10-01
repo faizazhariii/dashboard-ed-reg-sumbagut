@@ -2327,6 +2327,14 @@
           <tbody id="rekapPt2PivotBody"></tbody>
         </table>
       </div>
+
+      <p class="section-title" style="font-size:13px;margin-top:16px;">Segmentasi Redaman (STAT FINAL = Kendala)</p>
+      <div class="table-card" style="overflow-x:auto;">
+        <table class="pivot-table">
+          <thead><tr><th>Branch</th><th>Jenis Program Cek</th><th>-19 s/d -20</th><th>-20 s/d -22</th><th>&lt;-22</th><th>Grand Total</th></tr></thead>
+          <tbody id="rekapPt2RedamanBody"></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- ========== PT3 TA ========== -->
@@ -10801,10 +10809,11 @@ function renderRekapPT2(){
   ]);
 
   renderRekapPT2PivotFromRows('rekapPt2PivotHead', 'rekapPt2PivotBody', rows);
+  renderRekapPT2RedamanTable('rekapPt2RedamanBody', rows);
 
   // Pivot khusus TSEL Priority — cuma baris yang FLAG TSEL-nya mengandung "PRIO" (isinya "Prio September" dst, bulan berubah tiap bulan)
   const tselPrioRows = rows.filter(row => (get(row,'FLAG TSEL')||'').toUpperCase().includes('PRIO'));
-  renderRekapPT2PivotFromRows('rekapTselPrioPivotHead', 'rekapTselPrioPivotBody', tselPrioRows);
+  renderRekapPT2TselPrioPivot('rekapTselPrioPivotHead', 'rekapTselPrioPivotBody', tselPrioRows);
 }
 
 /* Bangun pivot Branch × (Golive/Go Deploy/Drop/Other) dari SEKUMPULAN baris
@@ -10863,6 +10872,163 @@ function renderRekapPT2PivotFromRows(headId, bodyId, rowsSubset){
   bodyEl.innerHTML = bodyRowsHtml + `
     <tr class="pivot-total">
       <td class="name pivot-sticky-col">TOTAL</td>
+      ${totalCellsHtml}
+      ${grandTotalTd}
+      <td>${(grandTotalVal ? (grandAchievementVal/grandTotalVal*100) : 0).toFixed(1)}%</td>
+    </tr>`;
+}
+
+/* Tabel "Segmentasi Redaman (STAT FINAL = Kendala)" — Branch × Jenis Program
+   Cek, dipecah ke 3 range AVG RXONU CEK. Logika klasifikasi sama persis
+   kayak renderRxonuKendalaTable (Feeding PT2), cuma di sini semua sel yang
+   ada datanya diklik-able -> nampilin detail order di bawah. */
+function renderRekapPT2RedamanTable(bodyId, rowsSubset){
+  const tbody = document.getElementById(bodyId);
+  if(!tbody) return;
+
+  const buckets = ['-19 s/d -20', '-20 s/d -22', '<-22'];
+  function classifyRxonu(raw){
+    const v = parseFloat((raw||'').toString().replace(',','.'));
+    if(isNaN(v)) return null;
+    if(v <= -19 && v >= -20) return '-19 s/d -20';
+    if(v < -20 && v >= -22) return '-20 s/d -22';
+    if(v < -22) return '<-22';
+    return null;
+  }
+
+  // { branch: { jenisProgramCek: { bucket: [rows] } } }
+  const data = {};
+  const branchOrder = [];
+  rowsSubset.forEach(row=>{
+    const statFinal = (get(row,'STAT FINAL')||'').toLowerCase();
+    if(!statFinal.includes('kendala')) return;
+    const bucket = classifyRxonu(get(row,'AVG RXONU CEK'));
+    if(!bucket) return;
+    const branch = get(row,'Telkomsel Branch') || 'Tidak Diketahui';
+    const jenisProgramCek = get(row,'JENIS PROGRAM CEK') || get(row,'JENIS PROGRAM') || 'Tidak Diketahui';
+    if(!data[branch]){ data[branch] = {}; branchOrder.push(branch); }
+    if(!data[branch][jenisProgramCek]) data[branch][jenisProgramCek] = {};
+    if(!data[branch][jenisProgramCek][bucket]) data[branch][jenisProgramCek][bucket] = [];
+    data[branch][jenisProgramCek][bucket].push(row);
+  });
+  branchOrder.sort();
+
+  if(branchOrder.length === 0){
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;">Tidak ada data kendala.</td></tr>`;
+    return;
+  }
+
+  const sumPort = (arr)=> arr.reduce((s,r)=> s + parseNum(get(r,'PORT ACTUAL')), 0);
+  const grandTotalRows = { '-19 s/d -20':[], '-20 s/d -22':[], '<-22':[] };
+  let html = '';
+  branchOrder.forEach(branch=>{
+    const jenisOrders = Object.keys(data[branch]).sort();
+    const branchAllRows = { '-19 s/d -20':[], '-20 s/d -22':[], '<-22':[] };
+    jenisOrders.forEach(jo=>{
+      const vals = data[branch][jo];
+      let rowTotalRows = [];
+      const cells = buckets.map(bk=>{
+        const cellRows = vals[bk] || [];
+        branchAllRows[bk] = branchAllRows[bk].concat(cellRows);
+        grandTotalRows[bk] = grandTotalRows[bk].concat(cellRows);
+        rowTotalRows = rowTotalRows.concat(cellRows);
+        const v = sumPort(cellRows);
+        return rekapTd('PT2', cellRows, v ? v.toLocaleString('id-ID') : '—', `PT2 Redaman — ${branch} — ${jo} — ${bk}`);
+      }).join('');
+      const rowTotalVal = sumPort(rowTotalRows);
+      const totalTd = rekapTd('PT2', rowTotalRows, rowTotalVal.toLocaleString('id-ID'), `PT2 Redaman — ${branch} — ${jo} — Semua Range`);
+      html += `<tr><td class="name">${branch}</td><td>${jo}</td>${cells}${totalTd}</tr>`;
+    });
+    const branchAllFlat = buckets.flatMap(bk=>branchAllRows[bk]);
+    const branchTotalVal = sumPort(branchAllFlat);
+    const branchCells = buckets.map(bk=>{
+      const v = sumPort(branchAllRows[bk]);
+      return rekapTd('PT2', branchAllRows[bk], v.toLocaleString('id-ID'), `PT2 Redaman — ${branch} (Subtotal) — ${bk}`);
+    }).join('');
+    const branchTotalTd = rekapTd('PT2', branchAllFlat, branchTotalVal.toLocaleString('id-ID'), `PT2 Redaman — ${branch} (Subtotal) — Semua Range`);
+    html += `<tr class="pivot-total"><td class="name" colspan="2">${branch} (Subtotal)</td>${branchCells}${branchTotalTd}</tr>`;
+  });
+
+  const grandAllFlat = buckets.flatMap(bk=>grandTotalRows[bk]);
+  const grandTotalVal = sumPort(grandAllFlat);
+  const grandCells = buckets.map(bk=>{
+    const v = sumPort(grandTotalRows[bk]);
+    return rekapTd('PT2', grandTotalRows[bk], v.toLocaleString('id-ID'), `PT2 Redaman — GRAND TOTAL — ${bk}`);
+  }).join('');
+  const grandTotalTd = rekapTd('PT2', grandAllFlat, grandTotalVal.toLocaleString('id-ID'), `PT2 Redaman — GRAND TOTAL — Semua Range`);
+  html += `<tr class="pivot-total"><td class="name" colspan="2">GRAND TOTAL</td>${grandCells}${grandTotalTd}</tr>`;
+
+  tbody.innerHTML = html;
+}
+
+/* Pivot Branch × Status khusus TSEL Priority PT2 — sama kayak
+   renderRekapPT2PivotFromRows, tapi row-nya dipecah lagi per Jenis Program
+   Cek (Branch + Jenis Program Cek jadi 2 kolom ID). Semua sel klik-able. */
+function renderRekapPT2TselPrioPivot(headId, bodyId, rowsSubset){
+  const headEl = document.getElementById(headId);
+  const bodyEl = document.getElementById(bodyId);
+  if(!headEl || !bodyEl) return;
+
+  const columns = ['golive','godeploy','drop','other'];
+  const colLabels = { golive:'Golive', godeploy:'Go Deploy', drop:'Drop', other:'Other' };
+  headEl.innerHTML = `<th class="pivot-sticky-col">Branch</th><th>Jenis Program Cek</th>` + columns.map(c=>`<th>${colLabels[c]}</th>`).join('') + `<th>Total</th><th>% Achievement</th>`;
+
+  const branchBuckets = {}; // { branch: { jenisProgramCek: { golive:[], godeploy:[], drop:[], other:[] } } }
+  const branchOrder = [];
+  rowsSubset.forEach(row=>{
+    const status = deriveStatus(get(row,'STAT FINAL'));
+    const branch = get(row,'Telkomsel Branch') || 'Tidak Diketahui';
+    const jenisProgramCek = get(row,'JENIS PROGRAM CEK') || get(row,'JENIS PROGRAM') || 'Tidak Diketahui';
+    const sCls = statusClass(status);
+    if(!branchBuckets[branch]){ branchBuckets[branch] = {}; branchOrder.push(branch); }
+    if(!branchBuckets[branch][jenisProgramCek]) branchBuckets[branch][jenisProgramCek] = { golive:[], godeploy:[], drop:[], other:[] };
+    const key = sCls in branchBuckets[branch][jenisProgramCek] ? sCls : 'other';
+    branchBuckets[branch][jenisProgramCek][key].push(row);
+  });
+  branchOrder.sort();
+
+  if(branchOrder.length === 0){
+    bodyEl.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:10px;">Tidak ada data.</td></tr>`;
+    return;
+  }
+
+  const sumPort = (arr)=> arr.reduce((s,r)=> s + parseNum(get(r,'PORT ACTUAL')), 0);
+  const colAllRows = { golive:[], godeploy:[], drop:[], other:[] };
+  let grandAllRows = [];
+  let bodyHtml = '';
+
+  branchOrder.forEach(branch=>{
+    const jenisOrders = Object.keys(branchBuckets[branch]).sort();
+    jenisOrders.forEach(jo=>{
+      const bucket = branchBuckets[branch][jo];
+      let rowAllRows = [];
+      const cells = columns.map(c=>{
+        const cellRows = bucket[c];
+        colAllRows[c] = colAllRows[c].concat(cellRows);
+        rowAllRows = rowAllRows.concat(cellRows);
+        const v = sumPort(cellRows);
+        return rekapTd('PT2', cellRows, v ? v.toLocaleString('id-ID') : '—', `PT2 TSEL Priority — ${branch} — ${jo} — ${colLabels[c]}`);
+      }).join('');
+      grandAllRows = grandAllRows.concat(rowAllRows);
+      const rowTotalVal = sumPort(rowAllRows);
+      const achievementVal = sumPort(bucket.golive);
+      const achievementPct = rowTotalVal ? (achievementVal/rowTotalVal*100).toFixed(1) : '0.0';
+      const totalTd = rekapTd('PT2', rowAllRows, `<strong>${rowTotalVal.toLocaleString('id-ID')}</strong>`, `PT2 TSEL Priority — ${branch} — ${jo} — Semua Status`);
+      bodyHtml += `<tr><td class="name pivot-sticky-col">${branch}</td><td>${jo}</td>${cells}${totalTd}<td>${achievementPct}%</td></tr>`;
+    });
+  });
+
+  const totalCellsHtml = columns.map(c=>{
+    const v = sumPort(colAllRows[c]);
+    return rekapTd('PT2', colAllRows[c], v.toLocaleString('id-ID'), `PT2 TSEL Priority — Semua Branch — ${colLabels[c]}`);
+  }).join('');
+  const grandTotalVal = sumPort(grandAllRows);
+  const grandAchievementVal = sumPort(colAllRows.golive);
+  const grandTotalTd = rekapTd('PT2', grandAllRows, grandTotalVal.toLocaleString('id-ID'), `PT2 TSEL Priority — Semua Branch — Semua Status`);
+
+  bodyEl.innerHTML = bodyHtml + `
+    <tr class="pivot-total">
+      <td class="name pivot-sticky-col" colspan="2">TOTAL</td>
       ${totalCellsHtml}
       ${grandTotalTd}
       <td>${(grandTotalVal ? (grandAchievementVal/grandTotalVal*100) : 0).toFixed(1)}%</td>
